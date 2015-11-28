@@ -1,1 +1,28 @@
-mbase
+#MBase-Android 基础框架
+* 项目类型：Library
+* 版本 version 0.1.2
+
+
+----
+#MBase 简介
+* MBase整合了网络请求（[OkHttp](https://github.com/square/okhttp)）、Sqlite ORM框架（[LiteORM](https://github.com/litesuits/android-lite-orm)）、常用工具类等
+* OkHttp的网络请求非常棒，所以本人也不再重复造轮，直接将OkHttp引入进来。只是它的网络请求代码有些繁琐，如果不封装一下，用起来很痛苦
+* LiteORM直接被引入，理由与上条相同，写的很不错，本人长期使用，也很稳定
+* 其它工具类，是为了方便使用，如：T(Toast)类、Scale(尺寸)类、StringUtils(字符串工具)类等
+
+
+## 使用 MBase 框架需要有以下权限：
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+* 访问网络权限
+
+## 如何使用
+
+* 请看示例代码
+
+# 关于作者
+
+* 陈磊（Chen Lei）
+* Email:monch.chen@yahoo.com
