@@ -47,11 +47,6 @@ public class MImageView extends SimpleDraweeView {
         setImageURI(uri);
     }
 
-    public void setAsset(String fileName) {
-        Uri uri = Uri.parse("asset://" + BaseApp.getPackageName() + "/" + fileName);
-        setImageURI(uri);
-    }
-
     public void setFile(File file) {
         if (file == null || !file.exists()) return;
         Uri uri = Uri.parse("file://" + file.getAbsolutePath());
