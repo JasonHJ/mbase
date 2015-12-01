@@ -2,6 +2,7 @@ package com.mbase.monch;
 
 import android.content.Context;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.mbase.monch.common.Preconditions;
 
 /**
@@ -18,6 +19,7 @@ public final class MBase {
                         "MBase的Context不允许为空，并且需要使用Application的上下文"),
                 Preconditions.checkNotNull(config,
                         "MBase的BaseConfig不允许为空，请初始化必要参数"));
+        Fresco.initialize(context);
     }
 
 }
