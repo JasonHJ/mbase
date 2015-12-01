@@ -25,6 +25,9 @@
         <activity android:name=".activitys.NetworkActivity"
             android:label="网络测试"
             android:screenOrientation="portrait" />
+        <activity android:name=".activitys.ImageActivity"
+            android:label="加载图片"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

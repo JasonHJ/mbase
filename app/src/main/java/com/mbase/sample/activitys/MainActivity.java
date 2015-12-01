@@ -13,12 +13,13 @@ public class MainActivity extends BaseActivity {
     private String[] buttons = new String[]{
             "网络请求测试",
             "本地数据库测试",
+            "图片加载测试",
             "其它测试"
     };
 
     @Override
     protected String[] getButtonTexts() {
-        return new String[]{"网络请求测试", "本地数据库测试", "其它测试"};
+        return buttons;
     }
 
     @Override
@@ -35,6 +36,10 @@ public class MainActivity extends BaseActivity {
                 T.ss("本地数据库测试");
                 break;
             case 2:
+                intent = new Intent(this, ImageActivity.class);
+                startActivity(intent);
+                break;
+            case 3:
                 intent = new Intent(this, OtherActivity.class);
                 intent.putExtra("titleText", buttons[id]);
                 startActivity(intent);
