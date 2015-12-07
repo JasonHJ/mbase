@@ -104,6 +104,9 @@ public class NetworkActivity extends BaseActivity {
                 request.post(HTTP, postParams, new ApiRequestCallback() {
                     @Override
                     protected ApiResult onParseCallback(String result) throws JSONException, LoginException {
+                        // 此处为子线程，主要用于解析返回结果，请不要在此处操作任何UI
+                        // 此处的设计思路为：自主解析有更高的可扩展性，相较于使用GSON等解析框架
+                        // 如需要使用GSON，可自主复写ApiRequestCallback实现
                         logger.info("异步：POST请求，子线程结果回调\n" + result);
                         ApiResult apiResult = new ApiResult();
                         apiResult.message = new ApiMessage();

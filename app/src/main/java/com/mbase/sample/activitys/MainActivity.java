@@ -2,7 +2,6 @@ package com.mbase.sample.activitys;
 
 import android.content.Intent;
 
-import com.mbase.monch.utils.toast.T;
 import com.mbase.sample.BaseActivity;
 
 /**
@@ -33,7 +32,8 @@ public class MainActivity extends BaseActivity {
                 break;
             case 1:
                 // todo 本地数据库测试
-                T.ss("本地数据库测试");
+                intent = new Intent(this, SqliteActivity.class);
+                startActivity(intent);
                 break;
             case 2:
                 intent = new Intent(this, ImageActivity.class);

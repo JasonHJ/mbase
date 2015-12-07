@@ -19,14 +19,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.OtherActivity"
-            android:label="其它测试"
-            android:screenOrientation="portrait" />
         <activity android:name=".activitys.NetworkActivity"
             android:label="网络测试"
             android:screenOrientation="portrait" />
         <activity android:name=".activitys.ImageActivity"
             android:label="加载图片"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activitys.SqliteActivity"
+            android:label="本地数据库测试"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activitys.OtherActivity"
+            android:label="其它测试"
             android:screenOrientation="portrait" />
     </application>
 
