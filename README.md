@@ -18,6 +18,11 @@
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 * 访问网络权限
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+```
+* 读取文件权限
+
 
 ## 如何使用
 
