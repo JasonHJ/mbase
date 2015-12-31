@@ -1,6 +1,6 @@
 #MBase-Android 基础框架
 * 项目类型：Library
-* 版本 version 0.1.2
+* 版本 version 0.1.4
 
 
 ----
@@ -16,11 +16,9 @@
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
-```
-* 访问网络权限
-```xml
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
+* 访问网络权限
 * 读取文件权限
 
 
