@@ -21,6 +21,15 @@ public class App extends Application {
     private static final String DB_NAME = "com.mbase.sample.db";
     private static final int DB_VERSION = 1;
 
+    /** 本地数据库更新回调 **/
+    private static SQLiteHelper.OnDBUpgradeListener onDBUpgradeListener = new SQLiteHelper.OnDBUpgradeListener() {
+        @Override
+        public void onUpdate(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Loggers logger = LogManager.getLogger(App.class);
+            logger.info("进入本地数据库升级回调，老版本号码：" + oldVersion + "，新版本号码：" + newVersion);
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,14 +43,5 @@ public class App extends Application {
                 .builder();
         MBase.initialize(this, config);
     }
-
-    /** 本地数据库更新回调 **/
-    private static SQLiteHelper.OnDBUpgradeListener onDBUpgradeListener = new SQLiteHelper.OnDBUpgradeListener() {
-        @Override
-        public void onUpdate(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Loggers logger = LogManager.getLogger(App.class);
-            logger.info("进入本地数据库升级回调，老版本号码：" + oldVersion + "，新版本号码：" + newVersion);
-        }
-    };
 
 }

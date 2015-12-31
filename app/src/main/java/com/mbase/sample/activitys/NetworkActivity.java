@@ -195,11 +195,15 @@ public class NetworkActivity extends BaseActivity {
                     @Override
                     protected void onComplete(ApiResult result) {
                         logger.info("请求已经到到主线程");
+                        apiRequest = null;
+                        isStart = false;
                     }
 
                     @Override
                     protected void onFailed(Failed error, Throwable ex) {
                         logger.error("请求异常" + error.getError(), ex);
+                        apiRequest = null;
+                        isStart = false;
                     }
                 });
                 isStart = true;

@@ -31,12 +31,13 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case 1:
-                // todo 本地数据库测试
                 intent = new Intent(this, SqliteActivity.class);
+                intent.putExtra("titleText", buttons[id]);
                 startActivity(intent);
                 break;
             case 2:
                 intent = new Intent(this, ImageActivity.class);
+                intent.putExtra("titleText", buttons[id]);
                 startActivity(intent);
                 break;
             case 3:
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity {
                 intent.putExtra("titleText", buttons[id]);
                 startActivity(intent);
                 break;
+            default:break;
         }
     }
 }
