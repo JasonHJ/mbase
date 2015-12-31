@@ -33,11 +33,12 @@ class ApiPostRequest extends ApiRequest {
         callback.setApiRequest(this);
         callback.onStart(url, METHOD_POST, params);
         RequestBody body = fromBody(params);
-        Request request = new Request.Builder()
-                .url(url)
-                .tag(tag)
-                .post(body)
-                .build();
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        builder.tag(tag);
+        builder.post(body);
+        makeHeader(builder, params);
+        Request request = builder.build();
         Call call = client.newCall(request);
         this.setCall(call);
         call.enqueue(callback);
@@ -51,10 +52,11 @@ class ApiPostRequest extends ApiRequest {
         String url = getUrl();
         Params params = getParams();
         RequestBody body = fromBody(params);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        builder.post(body);
+        makeHeader(builder, params);
+        Request request = builder.build();
         Call call = client.newCall(request);
         Response response = call.execute();
         if (response == null || !response.isSuccessful())

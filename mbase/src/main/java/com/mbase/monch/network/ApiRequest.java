@@ -1,10 +1,15 @@
 package com.mbase.monch.network;
 
+import android.text.TextUtils;
+
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 import com.squareup.okhttp.ResponseBody;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -89,7 +94,23 @@ public abstract class ApiRequest {
     protected abstract ApiRequest request();
     protected abstract ResponseBody requestSync() throws IOException;
 
-    protected Object getLogMessage() {
+    /** 组装请求头 **/
+    void makeHeader(Request.Builder builder, Params params) {
+        if (params == null || !params.hasHeaderParams()) return;
+        Iterator<Map.Entry<String, String>> iterator =
+                params.getHeaderParams().entrySet().iterator();
+        Map.Entry<String, String> entry;
+        while (iterator.hasNext()) {
+            entry = iterator.next();
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (!TextUtils.isEmpty(key) && !TextUtils.isEmpty(value))
+                builder.addHeader(key, value);
+        }
+    }
+
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("网络请求：\n");
         sb.append("URL：").append(url).append("\n");
@@ -98,5 +119,4 @@ public abstract class ApiRequest {
         sb.append("完整请求路径：").append(params != null ? params.getAssembledUrl(url) : url);
         return sb.toString();
     }
-
 }

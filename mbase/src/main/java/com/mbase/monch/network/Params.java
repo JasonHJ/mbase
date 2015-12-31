@@ -14,38 +14,54 @@ public class Params {
 
     private Map<String, String> stringParams;
     private Map<String, File> fileParams;
-
-    public Params() {
-        stringParams = new LinkedHashMap<>();
-        fileParams = new LinkedHashMap<>();
-    }
+    private Map<String, String> headerParams;
 
     public boolean put(String key, String value) {
         if (StringUtils.isEmpty(key) || value == null) return false;
+        if (stringParams == null) stringParams = new LinkedHashMap<>();
         stringParams.put(key, value);
         return true;
     }
 
     public boolean put(String name, File file) {
         if (StringUtils.isEmpty(name) || file == null || !file.exists()) return false;
+        if (fileParams == null) fileParams = new LinkedHashMap<>();
         fileParams.put(name, file);
         return true;
     }
 
+    public boolean putHeader(String name, String value) {
+        if (StringUtils.isEmpty(name) || value == null) return false;
+        if (headerParams == null) headerParams = new LinkedHashMap<>();
+        headerParams.put(name, value);
+        return true;
+    }
+
     public Map<String, String> getParams() {
-        return stringParams;
+        return stringParams != null ? stringParams : (stringParams = new LinkedHashMap<>());
     }
 
     public Map<String, File> getFileParams() {
-        return fileParams;
+        return fileParams != null ? fileParams : (fileParams = new LinkedHashMap<>());
+    }
+
+    public Map<String, String> getHeaderParams() {
+        return headerParams != null ? headerParams : (headerParams = new LinkedHashMap<>());
     }
 
     public boolean hasParams() {
-        return stringParams.size() > 0;
+        if (stringParams == null) stringParams = new LinkedHashMap<>();
+        return !stringParams.isEmpty();
     }
 
     public boolean hasFileParams() {
-        return fileParams.size() > 0;
+        if (fileParams == null) fileParams = new LinkedHashMap<>();
+        return !fileParams.isEmpty();
+    }
+
+    public boolean hasHeaderParams() {
+        if (headerParams == null) headerParams = new LinkedHashMap<>();
+        return !headerParams.isEmpty();
     }
 
     /**
@@ -74,8 +90,9 @@ public class Params {
     }
 
     public void clear() {
-        stringParams.clear();
-        fileParams.clear();
+        if (stringParams != null) stringParams.clear();
+        if (fileParams != null) fileParams.clear();
+        if (headerParams != null) headerParams.clear();
         System.gc();
     }
 
@@ -84,6 +101,7 @@ public class Params {
         return "Params{" +
                 "stringParams=" + stringParams +
                 ", fileParams=" + fileParams +
+                ", headerParams=" + headerParams +
                 '}';
     }
 }

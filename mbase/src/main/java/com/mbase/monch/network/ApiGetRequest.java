@@ -23,11 +23,12 @@ class ApiGetRequest extends ApiRequest {
         BaseCallback callback = getCallback();
         callback.setApiRequest(this);
         callback.onStart(url, METHOD_GET, params);
-        Request request = new Request.Builder()
-                .url(url)
-                .tag(tag)
-                .get()
-                .build();
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        builder.tag(tag);
+        builder.get();
+        makeHeader(builder, params);
+        Request request = builder.build();
         Call call = client.newCall(request);
         this.setCall(call);
         call.enqueue(callback);
@@ -41,10 +42,11 @@ class ApiGetRequest extends ApiRequest {
         String url = getUrl();
         Params params = getParams();
         url = params != null ? params.getAssembledUrl(url) : url;
-        Request request = new Request.Builder()
-                .url(url)
-                .get()
-                .build();
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        builder.get();
+        makeHeader(builder, params);
+        Request request = builder.build();
         Call call = client.newCall(request);
         Response response = call.execute();
         if (response == null || !response.isSuccessful())

@@ -61,6 +61,8 @@ public class NetworkActivity extends BaseActivity {
                 Params getParams = new Params();
                 getParams.put("key1", "value1");
                 getParams.put("key2", "参数2");
+                // 此处可以直接清加需要的请求头
+                getParams.putHeader("User-Agent", "MBaseSample/1.0");
                 request.get(HTTP, getParams, new ApiRequestCallback() {
                     @Override
                     protected void onStart(String url, int method, Params params) {
@@ -99,6 +101,8 @@ public class NetworkActivity extends BaseActivity {
                 Params postParams = new Params();
                 postParams.put("key1", "value1");
                 postParams.put("key2", "参数2");
+                // 此处可以直接清加需要的请求头
+                postParams.putHeader("User-Agent", "MBaseSample/1.0");
                 // 此处可以直接添加需要上传的文件参数
                 // postParams.put("fileKey", new File(BaseApp.getCacheDir(), "test.jpg"));
                 request.post(HTTP, postParams, new ApiRequestCallback() {
