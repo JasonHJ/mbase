@@ -26,19 +26,22 @@ public abstract class BaseCallback implements Callback {
     };
 
     private ApiRequest apiRequest;
-    protected void setApiRequest(ApiRequest request) {
+    /** 设置ApiRequest实例 **/
+    void setApiRequest(ApiRequest request) {
         this.apiRequest = request;
     }
-
+    /** 请求开始回调 **/
     protected void onStart(String url, int method, Params params) {}
-
+    /** 请求子线程解析回调 **/
     protected abstract ApiResult onParseCallback(String result) throws JSONException, LoginException;
-
+    /** 请求返回结果回调 **/
     protected abstract void onComplete(ApiResult result);
-
+    /** 请求失败回调 **/
     protected abstract void onFailed(Failed error, Throwable ex);
-
+    /** 登录异常回调 **/
     protected void onLoginError() {}
+    /** 请求取消回调 **/
+    protected void onCancel() {}
 
     /** 网络请求成功处理线程 **/
     protected class ResponseSuccessRunnable implements Runnable {
@@ -51,8 +54,11 @@ public abstract class BaseCallback implements Callback {
 
         @Override
         public void run() {
-            if (apiRequest.isCanceled()) return;
-            onComplete(result);
+            if (apiRequest.isCanceled()) {
+                onCancel();
+            } else {
+                onComplete(result);
+            }
             result.clear();
         }
     }
@@ -70,21 +76,24 @@ public abstract class BaseCallback implements Callback {
 
         @Override
         public void run() {
-            if (apiRequest.isCanceled()) return;
-            Failed F = Failed.OTHER;
-            if (ex != null) {
-                if (ex instanceof IOException) {
-                    F = Failed.NETWORK_ERROR;
-                } else if (ex instanceof TimeoutException) {
-                    F = Failed.TIMEOUT_ERROR;
-                } else if (ex instanceof JSONException) {
-                    F = Failed.PARSE_ERROR;
-                } else if (ex instanceof LoginException) {
-                    onLoginError();
-                    return;
+            if (apiRequest.isCanceled()) {
+                onCancel();
+            } else {
+                Failed F = Failed.OTHER;
+                if (ex != null) {
+                    if (ex instanceof IOException) {
+                        F = Failed.NETWORK_ERROR;
+                    } else if (ex instanceof TimeoutException) {
+                        F = Failed.TIMEOUT_ERROR;
+                    } else if (ex instanceof JSONException) {
+                        F = Failed.PARSE_ERROR;
+                    } else if (ex instanceof LoginException) {
+                        onLoginError();
+                        return;
+                    }
                 }
+                onFailed(F, ex);
             }
-            onFailed(F, ex);
         }
     }
 

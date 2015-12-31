@@ -22,26 +22,26 @@ public abstract class ApiRequestCallback extends BaseCallback {
 
     @Override
     public void onResponse(Response response) throws IOException {
-        if (response != null && response.isSuccessful()) {
-            ResponseBody body = response.body();
-            try {
-                String result = body != null ? body.string() : null;
-                ApiResult apiResult = onParseCallback(result);
-                mResponsePoster.execute(new ResponseSuccessRunnable(apiResult));
-            } catch (JSONException e) {
-                mResponsePoster.execute(
-                        new ResponseFailedRunnable("Parse error", e));
-            } catch (LoginException e) {
-                mResponsePoster.execute(
-                        new ResponseFailedRunnable("Login error", e));
-            } catch (Exception e) {
-                mResponsePoster.execute(
-                        new ResponseFailedRunnable("onParseCallback error", e));
-            } finally {
-                if (body != null) body.close();
-            }
-        } else {
+        if (response == null)
+            throw new IOException("Network error：Response is NULL");
+        if (!response.isSuccessful())
             throw new IOException("Network error：Unexpected code " + response);
+        ResponseBody body = response.body();
+        try {
+            String result = body != null ? body.string() : null;
+            ApiResult apiResult = onParseCallback(result);
+            mResponsePoster.execute(new ResponseSuccessRunnable(apiResult));
+        } catch (JSONException e) {
+            mResponsePoster.execute(
+                    new ResponseFailedRunnable("Parse error", e));
+        } catch (LoginException e) {
+            mResponsePoster.execute(
+                    new ResponseFailedRunnable("Login error", e));
+        } catch (Exception e) {
+            mResponsePoster.execute(
+                    new ResponseFailedRunnable("onParseCallback error", e));
+        } finally {
+            if (body != null) body.close();
         }
     }
 

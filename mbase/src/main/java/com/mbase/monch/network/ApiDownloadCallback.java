@@ -39,24 +39,24 @@ public abstract class ApiDownloadCallback extends BaseCallback {
 
     @Override
     public void onResponse(Response response) throws IOException {
-        if (response != null && response.isSuccessful()) {
-            ResponseBody body = response.body();
-            try {
-                byte[] bytes = body != null ? body.bytes() : null;
-                File file = doParse(bytes);
-                if (file == null || !file.exists())
-                    throw new IllegalArgumentException("Download result is empty");
-                ApiResult apiResult = new ApiResult();
-                apiResult.add(0, file.getAbsolutePath());
-                mResponsePoster.execute(new ResponseSuccessRunnable(apiResult));
-            } catch (Exception e) {
-                mResponsePoster.execute(
-                        new ResponseFailedRunnable("Download result is empty", e));
-            } finally {
-                if (body != null) body.close();
-            }
-        } else {
+        if (response == null)
+            throw new IOException("Network error：Response is NULL");
+        if (!response.isSuccessful())
             throw new IOException("Network error：Unexpected code " + response);
+        ResponseBody body = response.body();
+        try {
+            byte[] bytes = body != null ? body.bytes() : null;
+            File file = doParse(bytes);
+            if (!file.exists())
+                throw new IOException("File writer error");
+            ApiResult apiResult = new ApiResult();
+            apiResult.add(0, file.getAbsolutePath());
+            mResponsePoster.execute(new ResponseSuccessRunnable(apiResult));
+        } catch (IOException e) {
+            mResponsePoster.execute(
+                    new ResponseFailedRunnable("Create file error", e));
+        } finally {
+            if (body != null) body.close();
         }
     }
 
@@ -66,10 +66,13 @@ public abstract class ApiDownloadCallback extends BaseCallback {
     }
 
     private File doParse(byte[] data) throws IOException {
-        if (data == null) return null;
         File file = new File(fileSavePath, fileSaveName);
-        if (!file.getParentFile().exists() && file.getParentFile().isDirectory()) {//判断文件目录是否存在
-            file.getParentFile().mkdirs();
+        if (!file.getParentFile().exists() &&
+                file.getParentFile().isDirectory()) {//判断文件目录是否存在
+            boolean mkdirs = file.getParentFile().mkdirs();
+            if (!mkdirs)
+                throw new IOException("Create File '" +
+                        file.getParentFile().getAbsolutePath() + "' Error");
         }
         FileOutputStream fos = new FileOutputStream(file);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
