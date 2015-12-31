@@ -17,7 +17,7 @@ public class BaseApp {
 
     private BaseApp(){}
 
-    protected static void init(Context context, BaseConfig config) {
+    static void init(Context context, BaseConfig config) {
         mContext = context;
         mConfig = config;
     }

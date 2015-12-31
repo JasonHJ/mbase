@@ -3,6 +3,8 @@ package com.mbase.monch;
 import android.content.Context;
 import android.os.Environment;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.mbase.monch.database.LiteOrm;
 import com.mbase.monch.database.db.DataBase;
 import com.mbase.monch.database.db.DataBaseConfig;
@@ -42,6 +44,8 @@ public class BaseConfig {
         DataBaseConfig dbConfig = new DataBaseConfig(context, builder.dbName, builder.dbVersion, builder.onDBUpgradeListener);
         db = LiteOrm.newSingleInstance(dbConfig);
         this.charset = builder.charset;
+        if (builder.frescoImagePipelineConfig == null) Fresco.initialize(context);
+        else Fresco.initialize(context, builder.frescoImagePipelineConfig);
     }
 
     // 获取默认的缓存文件路径
@@ -85,6 +89,7 @@ public class BaseConfig {
         private String dbName = DEFAULT_DB_NAME;
         private SQLiteHelper.OnDBUpgradeListener onDBUpgradeListener;
         private Charset charset = DEFAULT_CHARSET;
+        private ImagePipelineConfig frescoImagePipelineConfig;
 
         public Builder(Context context) {
             this.context = context;
@@ -117,6 +122,11 @@ public class BaseConfig {
 
         public Builder setCharset(Charset charset) {
             this.charset = charset;
+            return this;
+        }
+
+        public Builder setFrescoConfig(ImagePipelineConfig config) {
+            this.frescoImagePipelineConfig = config;
             return this;
         }
 

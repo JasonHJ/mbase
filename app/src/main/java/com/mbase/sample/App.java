@@ -3,6 +3,7 @@ package com.mbase.sample;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.mbase.monch.BaseConfig;
 import com.mbase.monch.MBase;
 import com.mbase.monch.database.db.assit.SQLiteHelper;
@@ -29,6 +30,7 @@ public class App extends Application {
                 .setDbVersion(DB_VERSION)   // 本地数据库版本
                 .setCharset(Charset.forName("UTF-8"))   // 默认编码方式
                 .setOnDBUpdateListener(onDBUpgradeListener) // 本地数据库升级回调
+                .setFrescoConfig(ImagePipelineConfig.newBuilder(this).build()) // Fresco的配置
                 .builder();
         MBase.initialize(this, config);
     }
